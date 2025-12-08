@@ -1,0 +1,119 @@
+import type { BuildCommand, EnvVariables, HeaderRule } from './types'; // Assuming custom types are defined in a separate file
+
+interface CacheStrategy {
+  matchPattern: string;
+  expirationTime?: number;
+}
+
+interface FrameworkSettings {
+  vercel?: Record<string, any>;
+  netlify?: Record<string, any>;
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvVariables;
+  headers: Array<HeaderRule>;
+  cacheStrategies: Array<CacheStrategy>;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: 'npm run build',
+    output: '.next/out'
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PRIVATE_SECRET_KEY: process.env.NEXT_PRIVATE_SECRET_KEY
+  },
+  headers: [
+    {
+      source: '/api/:path*',
+      headers: [
+        { key: 'Access-Control-Allow-Credentials', value: 'true' },
+        { key: 'Access-Control-Allow-Origin', value: '*' }
+      ]
+    }
+  ],
+  cacheStrategies: [
+    {
+      matchPattern: '**/*.js',
+      expirationTime: 60 * 60 // Cache for 1 hour
+    },
+    {
+      matchPattern: '/api/**',
+      expirationTime: 60 * 5 // Cache API responses for 5 minutes
+    }
+  ],
+  frameworkSettings: {
+    vercel: {
+      buildCommand: 'npm run build',
+      outDir: '.next/out'
+    },
+    netlify: {
+      publish: '.next/serverless-functions',
+      functions: './functions'
+    }
+  }
+};
+
+import type { BuildCommand, EnvVariables, HeaderRule } from './types'; // Assuming custom types are defined in a separate file
+
+interface CacheStrategy {
+  matchPattern: string;
+  expirationTime?: number;
+}
+
+interface FrameworkSettings {
+  vercel?: Record<string, any>;
+  netlify?: Record<string, any>;
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvVariables;
+  headers: Array<HeaderRule>;
+  cacheStrategies: Array<CacheStrategy>;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: 'npm run build',
+    output: '.next/out'
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PRIVATE_SECRET_KEY: process.env.NEXT_PRIVATE_SECRET_KEY
+  },
+  headers: [
+    {
+      source: '/api/:path*',
+      headers: [
+        { key: 'Access-Control-Allow-Credentials', value: 'true' },
+        { key: 'Access-Control-Allow-Origin', value: '*' }
+      ]
+    }
+  ],
+  cacheStrategies: [
+    {
+      matchPattern: '**/*.js',
+      expirationTime: 60 * 60 // Cache for 1 hour
+    },
+    {
+      matchPattern: '/api/**',
+      expirationTime: 60 * 5 // Cache API responses for 5 minutes
+    }
+  ],
+  frameworkSettings: {
+    vercel: {
+      buildCommand: 'npm run build',
+      outDir: '.next/out'
+    },
+    netlify: {
+      publish: '.next/serverless-functions',
+      functions: './functions'
+    }
+  }
+};
